@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador de Entrenamiento</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⏱️ Temporizador de Entrenamiento</h1>
+            <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <main>
+            <div class="timer-display">
+                <div class="progress-ring">
+                    <svg class="progress-circle" width="320" height="320">
+                        <circle class="progress-circle-bg" cx="160" cy="160" r="150" 
+                                stroke-width="12" fill="none"/>
+                        <circle class="progress-circle-path" cx="160" cy="160" r="150" 
+                                stroke-width="12" fill="none"/>
+                    </svg>
+                    <div class="timer-content">
+                        <div class="time">00:00</div>
+                        <div class="phase">Preparado</div>
+                        <div class="sequence-info">
+                            <span class="current-interval">Intervalo: 0/0</span>
+                            <span class="current-repetition">Vuelta: 0/0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="btn primary">
+                    <i class="fas fa-play"></i> Iniciar
+                </button>
+                <button id="pauseBtn" class="btn secondary" disabled>
+                    <i class="fas fa-pause"></i> Pausar
+                </button>
+                <button id="resetBtn" class="btn secondary" disabled>
+                    <i class="fas fa-redo"></i> Reiniciar
+                </button>
+            </div>
+
+            <div class="active-sequence" style="display: none;">
+                <div class="sequence-header">
+                    <div class="header-title">
+                        <h2>Secuencia Actual</h2>
+                        
+                        </button>
+                    </div>
+                    <div class="sequence-actions">
+                        <button id="editSequenceBtn" class="btn secondary">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button id="useSequenceBtn" class="btn primary">
+                            <i class="fas fa-play"></i> Usar
+                        </button>
+                    </div>
+                </div>
+                <div class="sequence-preview">
+                    <!-- La secuencia activa se mostrará aquí -->
+                </div>
+            </div>
+
+            <div class="sequence-tabs">
+                <button id="savedSequencesTab" class="tab-btn active">
+                    <i class="fas fa-clock"></i> Secuencias Guardadas
+                </button>
+                <button id="newSequenceTab" class="tab-btn">
+                    <i class="fas fa-plus"></i> Nueva Secuencia
+                </button>
+            </div>
+
+            <div id="savedSequencesPanel" class="tab-panel">
+                <div class="header-title">
+                    <h2>Secuencias Guardadas</h2>
+                    <button id="closeSavedSequences" class="btn-icon" aria-label="Cerrar secuencias guardadas">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="timers-list" id="timersList">
+                    <!-- Los temporizadores guardados se mostrarán aquí -->
+                </div>
+            </div>
+
+            <div id="newSequencePanel" class="tab-panel" style="display: none;">
+                <div class="intervals-setup">
+                    <div class="intervals-header">
+                        <div class="header-main">
+                            <div class="header-title">
+                                <h2>Nueva Secuencia de Intervalos</h2>
+                                <button id="closeNewSequence" class="btn-icon" aria-label="Cerrar nueva secuencia">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="sequence-controls">
+                                <div class="input-group">
+                                    <label for="sequenceReps">Repeticiones de la secuencia</label>
+                                    <input type="number" id="sequenceReps" value="1" min="1" 
+                                           aria-label="Número de repeticiones de la secuencia completa">
+                                </div>
+                                <button id="saveTimer" class="btn secondary">
+                                    <i class="fas fa-save"></i> Guardar Secuencia
+                                </button>
+                            </div>
+                        </div>
+                        <button id="addIntervalBtn" class="btn secondary">
+                            <i class="fas fa-plus"></i> Añadir Intervalo
+                        </button>
+                    </div>
+                    
+                    <div id="intervalsList" class="intervals-list">
+                        <!-- Plantilla para un intervalo -->
+                        <div class="interval-item" data-interval-id="1">
+                            <div class="interval-header">
+                                <h3>Intervalo 1</h3>
+                                <button class="btn-icon delete-interval" aria-label="Eliminar intervalo">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="interval-inputs">
+                                <div class="input-group">
+                                    <label for="intervalName-1">Nombre del intervalo</label>
+                                    <input type="text" id="intervalName-1" class="interval-name" 
+                                           value="Ejercicio" placeholder="Ej: Calentamiento">
+                                </div>
+                                <div class="input-group time-input">
+                                    <label>Duración del intervalo</label>
+                                    <div class="time-controls">
+                                        <div class="minutes-input">
+                                            <input type="number" id="intervalMinutes-1" class="interval-minutes" 
+                                                   value="0" min="0" max="59" aria-label="Minutos">
+                                            <span>min</span>
+                                        </div>
+                                        <div class="seconds-input">
+                                            <input type="number" id="intervalSeconds-1" class="interval-seconds" 
+                                                   value="30" min="0" max="59" aria-label="Segundos">
+                                            <span>seg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <audio id="alertSound" src="assets/alert.mp3"></audio>
+    <script src="js/timer.js"></script>
+</body>
+</html> 
